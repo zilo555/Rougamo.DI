@@ -18,7 +18,7 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(SolutionDir)CHANGELOG.md"))</PackageReleaseNotes>
+    <PackageReleaseNotes Condition="'$(VersionSuffix)' == ''">For details: https://github.com/inversionhourglass/Rougamo.DI/releases/tag/v$(VersionPrefix)</PackageReleaseNotes>
   </PropertyGroup>
   
   <ItemGroup>
@@ -26,9 +26,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="..\..\README_en.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <None Include="..\..\README_en.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
