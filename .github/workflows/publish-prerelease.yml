@@ -18,11 +18,8 @@ jobs:
         uses: actions/setup-dotnet@v3.0.3
         with:
           dotnet-version: |
-            3.1.x
-            5.0.x
-            6.0.x
-            7.0.x
             8.0.x
+            9.0.x
 
       - name: Remove Tests
         run: dotnet sln ${{ env.SOLUTION }} remove (ls -r test/**/*.csproj)
@@ -36,7 +33,7 @@ jobs:
           if (($branchName -ne "pre/abstract") -and ($branchName -notlike "pre/*-full")) {
             $abstractions = @("Rougamo.Extensions.DependencyInjection.Abstractions", "Rougamo.Extensions.DependencyInjection.AspNetCore.Abstractions")
             foreach ($packageName in $abstractions) {
-              # ´Ónuget.org»ñÈ¡×îĞÂ°æ±¾ºÅ
+              # ä»nuget.orgè·å–æœ€æ–°ç‰ˆæœ¬å·
               $pattern = "^> $packageName \| (\S+) "
               $packages = nuget search $packageName -PreRelease
               foreach ($pkg in $packages) {
@@ -57,7 +54,7 @@ jobs:
               }
               echo "The latest version of $packageName is $latestVersion"
 
-              # ĞŞ¸ÄÏîÄ¿ÎÄ¼ş°æ±¾ºÅ
+              # ä¿®æ”¹é¡¹ç›®æ–‡ä»¶ç‰ˆæœ¬å·
               $xmlPath = "src/$packageName/$packageName.csproj"
               [xml]$xmlDoc = Get-Content $xmlPath
               $propertyGroup = $xmlDoc.Project.PropertyGroup
@@ -85,7 +82,7 @@ jobs:
         run: |
           $branchName = "${{ github.ref_name }}"
           if ($branchName -like "pre/*-full") {
-            # È«Á¿·¢²¼ÏÈ·¢²¼¹«ÓÃ³éÏóÏîÄ¿
+            # å…¨é‡å‘å¸ƒå…ˆå‘å¸ƒå…¬ç”¨æŠ½è±¡é¡¹ç›®
             $genericHost = Get-ChildItem -Path nugets | Where-Object { $_.Name -match "Rougamo\.Extensions\.DependencyInjection\.Abstractions\.\d+\.\d+\.\d+-preview-\d+\.nupkg" }
             $aspnetcore = Get-ChildItem -Path nugets | Where-Object { $_.Name -match "Rougamo\.Extensions\.DependencyInjection\.AspNetCore\.Abstractions\.\d+\.\d+\.\d+-preview-\d+\.nupkg" }
             dotnet nuget push $genericHost.FullName -k ${{ secrets.API_KEY }} -s https://api.nuget.org/v3/index.json

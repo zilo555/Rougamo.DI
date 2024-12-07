@@ -19,11 +19,8 @@ jobs:
         uses: actions/setup-dotnet@v3.0.3
         with:
           dotnet-version: |
-            3.1.x
-            5.0.x
-            6.0.x
-            7.0.x
             8.0.x
+            9.0.x
 
       - name: Restore NuGets
         run: dotnet restore ${{ env.SOLUTION }}
@@ -34,7 +31,7 @@ jobs:
           if ($tagName -notlike "abstract-*") {
             $abstractions = @("Rougamo.Extensions.DependencyInjection.Abstractions", "Rougamo.Extensions.DependencyInjection.AspNetCore.Abstractions")
             foreach ($packageName in $abstractions) {
-              # ´Ónuget.org»ñÈ¡×îĞÂÕıÊ½°æµÄ°æ±¾ºÅ
+              # ä»nuget.orgè·å–æœ€æ–°æ­£å¼ç‰ˆçš„ç‰ˆæœ¬å·
               $pattern = "^> $packageName \| (\S+) "
               $packages = nuget search $packageName
               foreach ($pkg in $packages) {
@@ -47,7 +44,7 @@ jobs:
               }
               echo "The latest stable version of $packageName is $latestVersion"
 
-              # ĞŞ¸ÄÏîÄ¿ÎÄ¼ş°æ±¾ºÅ
+              # ä¿®æ”¹é¡¹ç›®æ–‡ä»¶ç‰ˆæœ¬å·
               $xmlPath = "src/$packageName/$packageName.csproj"
               [xml]$xmlDoc = Get-Content $xmlPath
               $propertyGroup = $xmlDoc.Project.PropertyGroup
