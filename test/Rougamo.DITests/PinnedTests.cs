@@ -1,4 +1,3 @@
-#if !NET9_0_OR_GREATER
 using GenericHost;
 
 namespace Rougamo.DITests
@@ -7,4 +6,3 @@ namespace Rougamo.DITests
     {
     }
 }
-#endif
