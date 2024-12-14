@@ -60,7 +60,7 @@ jobs:
           }
 
       - name: Build Solution
-        run: dotnet build --configuration Release --no-restore ${{ env.SOLUTION }}
+        run: dotnet build --configuration Release --no-restore ${{ env.SOLUTION }} -p:TagName=
 
       - name: Run Tests
         run: dotnet test --configuration Release --no-build ${{ env.SOLUTION }}
@@ -69,7 +69,9 @@ jobs:
         run: Remove-Item -Path nugets -Recurse -Force -ErrorAction SilentlyContinue
 
       - name: Pack NuGets
-        run: dotnet pack ${{ env.SOLUTION }} --no-build --configuration Release
+        run: |
+          $tagName = "${{ github.ref_name }}"
+          dotnet pack ${{ env.SOLUTION }} --no-build --configuration Release -p:TagName=$tagName
 
       - name: Publish
         run: |
