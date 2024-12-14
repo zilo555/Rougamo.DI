@@ -69,7 +69,7 @@ namespace Rougamo.Context
 
         /// <summary>
         /// </summary>
-        public static IEnumerable<object> GetServices(this MethodContext context, Type serviceType)
+        public static IEnumerable<object?> GetServices(this MethodContext context, Type serviceType)
         {
             var scopedServices = context.GetServiceProvider();
             return scopedServices == null ? [] : scopedServices.GetServices(serviceType);
@@ -85,7 +85,7 @@ namespace Rougamo.Context
 
         /// <summary>
         /// </summary>
-        public static T GetRequiredService<T>(this MethodContext context)
+        public static T GetRequiredService<T>(this MethodContext context) where T : notnull
         {
             var scopedServices = context.GetServiceProvider();
             if (scopedServices == null) throw new InvalidOperationException("Cannot get the IServiceProvider instance.");
