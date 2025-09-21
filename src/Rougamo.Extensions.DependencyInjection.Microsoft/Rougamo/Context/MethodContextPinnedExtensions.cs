@@ -59,12 +59,29 @@ namespace Rougamo.Context
 
         /// <summary>
         /// </summary>
+        public static object? GetKeyedService(this MethodContext context, Type serviceType, object? serviceKey)
+        {
+            return context.GetServiceProvider()?.GetKeyedService(serviceType, serviceKey);
+        }
+
+        /// <summary>
+        /// </summary>
         public static object GetRequiredService(this MethodContext context, Type serviceType)
         {
             var scopedServices = context.GetServiceProvider();
             if (scopedServices == null) throw new InvalidOperationException("Cannot get the IServiceProvider instance.");
 
             return scopedServices.GetRequiredService(serviceType);
+        }
+
+        /// <summary>
+        /// </summary>
+        public static object GetRequiredKeyedService(this MethodContext context, Type serviceType, object? serviceKey)
+        {
+            var scopedServices = context.GetServiceProvider();
+            if (scopedServices == null) throw new InvalidOperationException("Cannot get the IServiceProvider instance.");
+
+            return scopedServices.GetRequiredKeyedService(serviceType, serviceKey);
         }
 
         /// <summary>
@@ -85,12 +102,30 @@ namespace Rougamo.Context
 
         /// <summary>
         /// </summary>
+        public static T? GetKeyedService<T>(this MethodContext context, object? serviceKey)
+        {
+            var scopedServices = context.GetServiceProvider();
+            return scopedServices == null ? default : scopedServices.GetKeyedService<T>(serviceKey);
+        }
+
+        /// <summary>
+        /// </summary>
         public static T GetRequiredService<T>(this MethodContext context) where T : notnull
         {
             var scopedServices = context.GetServiceProvider();
             if (scopedServices == null) throw new InvalidOperationException("Cannot get the IServiceProvider instance.");
 
             return scopedServices.GetRequiredService<T>();
+        }
+
+        /// <summary>
+        /// </summary>
+        public static T GetRequiredKeyedService<T>(this MethodContext context, object? serviceKey) where T : notnull
+        {
+            var scopedServices = context.GetServiceProvider();
+            if (scopedServices == null) throw new InvalidOperationException("Cannot get the IServiceProvider instance.");
+
+            return scopedServices.GetRequiredKeyedService<T>(serviceKey);
         }
 
         /// <summary>
